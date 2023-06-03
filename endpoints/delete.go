@@ -12,7 +12,8 @@ func Delete(c *fiber.Ctx, db *gorm.DB) error {
 	name := c.Params("name")
 
 	var satResult types.SATResult
-	db.Model(&types.SATResult{}).Where("name < ?", name).First(&satResult)
+	// Finds the record based on the name and deletes it
+	db.Model(&types.SATResult{}).Where("name = ?", name).First(&satResult)
 	if satResult.Name == "" {
 		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{"error": "Record not found", "NAME": &satResult.Name})
 	}
